@@ -102,8 +102,8 @@ function lisa(){
             $nimi = mysqli_real_escape_string ($connection, $_POST["nimi"]);
             $puur = mysqli_real_escape_string ($connection, $_POST["puur"]);
             $liik = mysqli_real_escape_string ($connection, "pildid/".$_FILES["liik"]["name"]);
-            $sql = "INSERT INTO mtseljab_loomaaed (nimi, puur, liik) VALUES ('$nimi','$puur','$liik')";
-            $result = mysqli_query($connection, $sql);
+            $query = "INSERT INTO mtseljab_loomaaed (nimi, puur, liik) VALUES ('$nimi','$puur','$liik')";
+            $result = mysqli_query($connection, $query);
             $row = mysqli_fetch_assoc($result);
             if ($row){
 
