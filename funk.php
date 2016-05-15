@@ -19,8 +19,8 @@ function logi(){
         header("Location: ?page=loomad");
     } else {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if ($_POST["user"] == "" || $_POST["pass"] == "") {
-                if ($_POST["user"] == "") {
+            if (empty($_POST["user"]) || empty($_POST["pass"])) {
+                if (empty($_POST["user"])) {
                     $errors[] = "Fill in username!";
                 }
                 if (empty($POST["pass"])) {
@@ -30,10 +30,10 @@ function logi(){
             } else {
                 $username = mysqli_real_escape_string($connection, $_POST["user"]);
                 $password = mysqli_real_escape_string($connection, $_POST["pass"]);
-                $query = "SELECT id FROM mtseljab_kylastajad WHERE username='$username' AND passw=sha1('$password')";
+                $query = "SELECT id FROM mtseljab_kylastajad WHERE username='".$username."' AND passw=sha1('".$password."')";
                 $result = mysqli_query($connection, $query) or die("Ei saanud baasi utf-8-sse - ".mysqli_error($connection));
-                $row = mysqli_num_rows($result);
-                if ($row>0) {
+                $row = mysqli_fetch_assoc($result);
+                if ($row) {
                     $_SESSION["user"] = $_POST["user"];
                     header("Location: ?page=loomad");
                 } else {
