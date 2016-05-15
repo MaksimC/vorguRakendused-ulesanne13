@@ -92,9 +92,9 @@ function lisa(){
         header("Location: ?page=login");
     } else if ($_SERVER["REQUEST_METHOD"]=="POST"){
         if(empty($_POST["user"]) || empty($POST["pass"])){
-            if (empty($POST["user"])){
+            if (empty($POST["nimi"])){
                 $errors[] = "Fill in username!";
-            } if (empty($POST["pass"])){
+            } if (empty($POST["puur"])){
                 $errors[] = "Please enter your password!";
             }
         } else {
