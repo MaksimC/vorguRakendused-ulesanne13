@@ -52,15 +52,20 @@ function kuva_puurid(){
     global $connection;
     $puurid = array();
 
-    $query = "SELECT DISTINCT puur FROM loomaaed_mtseljab ORDER BY puur ASC ";
-    $result = mysqli_query($connection, $query) or die("$query - ".mysqli_error($connection));
 
-    if (mysqli_num_rows($result) > 0) {
-        // output data of each row
-        while ($puurinumbrid = mysqli_fetch_assoc($result)) {
-            $result_loomad = mysqli_query($connection, "SELECT * FROM loomaaed_mtseljab WHERE  puur=".$puurinumbrid['puur']);
-            while ($loomarida = mysqli_fetch_assoc($result_loomad)) {
-                $puurid[$puurinumbrid['puur']][] = $loomarida;
+    if(empty($_SESSION["user"])) {
+        header("Location: ?page=login");
+    } else {
+        $query = "SELECT DISTINCT puur FROM loomaaed_mtseljab ORDER BY puur ASC ";
+        $result = mysqli_query($connection, $query) or die("$query - " . mysqli_error($connection));
+
+        if (mysqli_num_rows($result) > 0) {
+            // output data of each row
+            while ($puurinumbrid = mysqli_fetch_assoc($result)) {
+                $result_loomad = mysqli_query($connection, "SELECT * FROM loomaaed_mtseljab WHERE  puur=" . $puurinumbrid['puur']);
+                while ($loomarida = mysqli_fetch_assoc($result_loomad)) {
+                    $puurid[$puurinumbrid['puur']][] = $loomarida;
+                }
             }
         }
     }
@@ -87,16 +92,18 @@ function lisa(){
                 $errors[] = "Please enter your password!";
             }
         } else {
-            $username = mysqli_real_escape_string ($connection, $_POST["user"]);
-            $password = mysqli_real_escape_string ($connection, $_POST["pass"]);
-            $query = "SELECT id FROM mtseljab_kylastajad WHERE username='$username' AND passw=sha1('$password')";
-            $result = mysqli($connection, $query);
+            upload('liik');
+            $nimi = mysqli_real_escape_string ($connection, $_POST["nimi"]);
+            $puur = mysqli_real_escape_string ($connection, $_POST["puur"]);
+            $liik = mysqli_real_escape_string ($connection, "pildid/".$_FILES["liik"]["name"]);
+            $sql = "INSERT INTO mtseljab_loomaaed (nimi, puur, liik) VALUES ('$nimi','$puur','$liik')";
+            $result = mysqli_query($connection, $sql);
             $row = mysqli_fetch_assoc($result);
             if ($row){
-                $SESSION["user"] = $username;
+
                 header("Location: ?page=loomad");
             } else {
-                header("Location: ?page=login");
+                header("Location: ?page=loomavorm");
             }
         }
     }
