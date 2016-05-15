@@ -15,7 +15,7 @@ function logi(){
     global $connection;
     $errors =array();
 
-    if(!empty($_SESSION["user"])){
+    if(isset($_SESSION["user"])){
         header("Location: ?page=loomad");
     } else {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
