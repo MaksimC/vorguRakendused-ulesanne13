@@ -17,27 +17,33 @@ function logi(){
 
     if(!empty($_SESSION["user"])){
         header("Location: ?page=loomad");
-    }else if ($_SERVER["REQUEST_METHOD"]=="POST"){
-        if(empty($_POST["user"]) || empty($POST["pass"])){
-            if (empty($POST["user"])){
-                $errors[] = "Fill in username!";
-            } if (empty($POST["pass"])){
-                $errors[] = "Please enter your password!";
-            }
-        } else {
-            $username = mysqli_real_escape_string ($connection, $_POST["user"]);
-            $password = mysqli_real_escape_string ($connection, $_POST["pass"]);
-            $query = "SELECT id FROM mtseljab_kylastajad WHERE username='$username' AND passw=sha1('$password')";
-            $result = mysqli($connection, $query);
-            $row = mysqli_fetch_assoc($result);
-            if ($row){
-                $SESSION["user"] = $username;
-                header("Location: ?page=loomad");
+    } else {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+            if ($_POST["user"] == '' || $_POST["pass"] == '') {
+                if ($_POST["user"] == "") {
+                    $errors[] = "Fill in username!";
+                }
+                if (empty($POST["pass"])) {
+                    $errors[] = "Please enter your password!";
+                }
+
             } else {
-                header("Location: ?page=login");
+                $username = mysqli_real_escape_string($connection, $_POST["user"]);
+                $password = mysqli_real_escape_string($connection, $_POST["pass"]);
+                $query = "SELECT id FROM mtseljab_kylastajad WHERE username='$username' AND passw=sha1('$password')";
+                $result = mysqli_query($connection, $query);
+                $row = mysqli_fetch_assoc($result);
+                if ($row) {
+                    $SESSION["user"] = $username;
+                    header("Location: ?page=loomad");
+                } else {
+                    header("Location: ?page=login");
+                }
             }
         }
     }
+
     include_once('views/login.html');
 }
 
