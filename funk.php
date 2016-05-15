@@ -93,9 +93,9 @@ function lisa(){
     } else if ($_SERVER["REQUEST_METHOD"]=="POST"){
         if(empty($_POST["user"]) || empty($POST["pass"])){
             if (empty($POST["nimi"])){
-                $errors[] = "Fill in username!";
+                $errors[] = "Fill in name!";
             } if (empty($POST["puur"])){
-                $errors[] = "Please enter your password!";
+                $errors[] = "Please enter puur number!";
             }
         } else {
             upload('liik');
