@@ -80,7 +80,6 @@ function kuva_puurid(){
     mysqli_free_result($result);
     include_once('views/puurid.html');
 
-
 }
 
 function lisa(){
@@ -91,10 +90,10 @@ function lisa(){
     if(empty($_SESSION["user"])){
         header("Location: ?page=login");
     } else if ($_SERVER["REQUEST_METHOD"]=="POST"){
-        if(empty($_POST["user"]) || empty($POST["pass"])){
-            if (empty($POST["nimi"])){
+        if(empty($_POST["nimi"]) || empty($_POST["puur"])){
+            if (empty($_POST["nimi"])){
                 $errors[] = "Fill in name!";
-            } if (empty($POST["puur"])){
+            } if (empty($_POST["puur"])){
                 $errors[] = "Please enter puur number!";
             }
         } else {
